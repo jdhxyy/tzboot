@@ -1,0 +1,3 @@
+https://github.com/jdhxyy/tztype-clang.git
+https://github.com/jdhxyy/md5-clang.git
+https://github.com/jdhxyy/tzflash.git
