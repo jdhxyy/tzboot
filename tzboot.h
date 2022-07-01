@@ -16,7 +16,7 @@
 // 板卡类型数组长度
 #define BOARD_TYPE_ARRAY_LEN 10
 // 升级尾保留字节数
-#define UPGRADE_TAIL_RESERVED 64
+#define UPGRADE_TAIL_RESERVED 63
 
 // TZBootRebootFunc 执行应用程序函数类型
 typedef void (*TZBootRunApp)(int addr);
@@ -29,11 +29,18 @@ typedef struct {
     uint16_t DVersion;
     uint8_t VVersion;
     uint32_t FileSize;
-    uint8_t MD5[MD5_LEN];
+    // 校验方式.0:MD5,1:CRC16,2:CRC32
+    uint8_t CheckType;
+    uint8_t FileCheckSum[MD5_LEN];
     uint32_t BoardTypeArrayLen;
     char BoardTypeArray[BOARD_TYPE_ARRAY_LEN][BOARD_TYPE_LEN_MAX];
     uint8_t Reserved[UPGRADE_TAIL_RESERVED];
 } UpgradeTail;
+
+// 校验方式
+#define UPGRADE_CHECK_TYPE_MD5 0
+#define UPGRADE_CHECK_TYPE_CRC16 1
+#define UPGRADE_CHECK_TYPE_CRC32 2
 
 // TZUpgradeEnvironment 升级环境
 typedef struct {
