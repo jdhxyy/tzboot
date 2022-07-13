@@ -6,6 +6,7 @@
 #define TZBOOT_H
 
 #include "tztype.h"
+#include "md5.h"
 
 // ”––ß±Í«©
 #define VALID_LABEL "TZIOT"

@@ -4,7 +4,6 @@
 
 #include "tzboot.h"
 #include "tzflash.h"
-#include "md5.h"
 #include <string.h>
 
 // 最大升级次数
@@ -57,7 +56,7 @@ static bool isNeedUpgrade(void) {
 
     uint8_t md5[MD5_LEN] = {0};
     MD5Calc((uint8_t*)(intptr_t)gEnvironment.BackupAddr, (int)backupTail.FileSize, md5);
-    if (memcmp(backupTail.MD5, md5, MD5_LEN) != 0) {
+    if (memcmp(backupTail.FileCheckSum, md5, MD5_LEN) != 0) {
         // 清除掉无效文件尾可避免每次启动都计算MD5，提高启动速度
         clearBackupTail();
         return false;
