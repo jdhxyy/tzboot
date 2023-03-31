@@ -6,9 +6,9 @@
 #include "tzflash.h"
 #include <string.h>
 
-// ×î´óÉı¼¶´ÎÊı
+// æœ€å¤§å‡çº§æ¬¡æ•°
 #define MAX_UPGRADE_NUM 3
-// Ğ´ÈëflashÊ±µÄ×Ö½ÚÊı
+// å†™å…¥flashæ—¶çš„å­—èŠ‚æ•°
 #define WRITE_BYTES_NUM 64
 
 static TZBootEnvironment gEnvironment;
@@ -19,12 +19,12 @@ static bool isNeedUpgrade(void);
 static void clearBackupTail(void);
 static bool upgrade(void);
 
-// TZBootLoad Ä£¿éÔØÈë
+// TZBootLoad æ¨¡å—è½½å…¥
 void TZBootLoad(TZBootEnvironment environment) {
     gEnvironment = environment;
 }
 
-// TZBootRun Ä£¿éÔËĞĞ
+// TZBootRun æ¨¡å—è¿è¡Œ
 void TZBootRun(void) {
     if (isNeedUpgrade()) {
         for (int i = 0; i < MAX_UPGRADE_NUM; i++) {
@@ -46,7 +46,7 @@ static bool isNeedUpgrade(void) {
     if (appTail.DVersion != backupTail.DVersion) {
         return false;
     }
-    // V°æ±¾Ò»ÖÂËµÃ÷ÊÇÍ¬Ò»¸ö²»ĞèÒªÉı¼¶
+    // Vç‰ˆæœ¬ä¸€è‡´è¯´æ˜æ˜¯åŒä¸€ä¸ªä¸éœ€è¦å‡çº§
     if (appTail.VVersion == backupTail.VVersion) {
         return false;
     }
@@ -57,7 +57,7 @@ static bool isNeedUpgrade(void) {
     uint8_t md5[MD5_LEN] = {0};
     MD5Calc((uint8_t*)(intptr_t)gEnvironment.BackupAddr, (int)backupTail.FileSize, md5);
     if (memcmp(backupTail.FileCheckSum, md5, MD5_LEN) != 0) {
-        // Çå³ıµôÎŞĞ§ÎÄ¼şÎ²¿É±ÜÃâÃ¿´ÎÆô¶¯¶¼¼ÆËãMD5£¬Ìá¸ßÆô¶¯ËÙ¶È
+        // æ¸…é™¤æ‰æ— æ•ˆæ–‡ä»¶å°¾å¯é¿å…æ¯æ¬¡å¯åŠ¨éƒ½è®¡ç®—MD5ï¼Œæé«˜å¯åŠ¨é€Ÿåº¦
         clearBackupTail();
         return false;
     }
@@ -155,8 +155,8 @@ static bool upgrade(void) {
     return isOK;
 }
 
-// TZBootUpdateAppTail ¸üĞÂÓ¦ÓÃ³ÌĞò³ÌĞòÎ²
-// Èç¹ûÓ¦ÓÃ³ÌĞòµÄÉı¼¶Î²µÄD°æ±¾»òÕßV°æ±¾ÓëÅäÖÃÖµ²»Æ¥ÅäÔò»á¸üĞÂ
+// TZBootUpdateAppTail æ›´æ–°åº”ç”¨ç¨‹åºç¨‹åºå°¾
+// å¦‚æœåº”ç”¨ç¨‹åºçš„å‡çº§å°¾çš„Dç‰ˆæœ¬æˆ–è€…Vç‰ˆæœ¬ä¸é…ç½®å€¼ä¸åŒ¹é…åˆ™ä¼šæ›´æ–°
 void TZBootUpdateAppTail(int dversion, int vversion) {
     UpgradeTail appTail, backupTail;
     if (readAppTail(&appTail) == false || readBackupTail(&backupTail) == false) {
@@ -168,7 +168,7 @@ void TZBootUpdateAppTail(int dversion, int vversion) {
         return;
     }
 
-    // ¸üĞÂÓ¦ÓÃ³ÌĞòµÄÉı¼¶Î²
+    // æ›´æ–°åº”ç”¨ç¨‹åºçš„å‡çº§å°¾
     memset(&appTail, 0, sizeof(UpgradeTail));
     memcpy(appTail.Label, VALID_LABEL, LABEL_LEN);
     appTail.DVersion = (uint16_t)dversion;

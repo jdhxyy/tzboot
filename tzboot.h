@@ -8,29 +8,29 @@
 #include "tztype.h"
 #include "md5.h"
 
-// ÓĞĞ§±êÇ©
+// æœ‰æ•ˆæ ‡ç­¾
 #define VALID_LABEL "TZIOT"
-// ±êÇ©×Ö½ÚÊı
+// æ ‡ç­¾å­—èŠ‚æ•°
 #define LABEL_LEN 5
-// °å¿¨ÀàĞÍ×î´ó×Ö½ÚÊı
+// æ¿å¡ç±»å‹æœ€å¤§å­—èŠ‚æ•°
 #define BOARD_TYPE_LEN_MAX 16
-// °å¿¨ÀàĞÍÊı×é³¤¶È
+// æ¿å¡ç±»å‹æ•°ç»„é•¿åº¦
 #define BOARD_TYPE_ARRAY_LEN 10
-// Éı¼¶Î²±£Áô×Ö½ÚÊı
+// å‡çº§å°¾ä¿ç•™å­—èŠ‚æ•°
 #define UPGRADE_TAIL_RESERVED 63
 
-// TZBootRebootFunc Ö´ĞĞÓ¦ÓÃ³ÌĞòº¯ÊıÀàĞÍ
+// TZBootRebootFunc æ‰§è¡Œåº”ç”¨ç¨‹åºå‡½æ•°ç±»å‹
 typedef void (*TZBootRunApp)(int addr);
 
 #pragma pack(1)
 
-// 256×Ö½ÚÎÄ¼şÎ²
+// 256å­—èŠ‚æ–‡ä»¶å°¾
 typedef struct {
     uint8_t Label[LABEL_LEN];
     uint16_t DVersion;
     uint8_t VVersion;
     uint32_t FileSize;
-    // Ğ£Ñé·½Ê½.0:MD5,1:CRC16,2:CRC32
+    // æ ¡éªŒæ–¹å¼.0:MD5,1:CRC16,2:CRC32
     uint8_t CheckType;
     uint8_t FileCheckSum[MD5_LEN];
     uint32_t BoardTypeArrayLen;
@@ -38,39 +38,39 @@ typedef struct {
     uint8_t Reserved[UPGRADE_TAIL_RESERVED];
 } UpgradeTail;
 
-// Ğ£Ñé·½Ê½
+// æ ¡éªŒæ–¹å¼
 #define UPGRADE_CHECK_TYPE_MD5 0
 #define UPGRADE_CHECK_TYPE_CRC16 1
 #define UPGRADE_CHECK_TYPE_CRC32 2
 
-// TZUpgradeEnvironment Éı¼¶»·¾³
+// TZUpgradeEnvironment å‡çº§ç¯å¢ƒ
 typedef struct {
-    // ³ÉÔ±±äÁ¿
-    // Ó¦ÓÃ³ÌĞòµØÖ·
+    // æˆå‘˜å˜é‡
+    // åº”ç”¨ç¨‹åºåœ°å€
     int AppAddr;
     int AppMaxSize;
-    // ±¸·İÇø³ÌĞòµØÖ·
+    // å¤‡ä»½åŒºç¨‹åºåœ°å€
     int BackupAddr;
     int BackupMaxSize;
-    // ±£´æÎÄ¼şÎ²µØÖ·
+    // ä¿å­˜æ–‡ä»¶å°¾åœ°å€
     int UpgradeTailSaveAddr;
     int UpgradeTailSaveMaxSize;
 
-    // API½Ó¿Ú
-    // Ö´ĞĞÓ¦ÓÃ³ÌĞòº¯Êı
+    // APIæ¥å£
+    // æ‰§è¡Œåº”ç”¨ç¨‹åºå‡½æ•°
     TZBootRunApp RunApp;
 } TZBootEnvironment;
 
 #pragma pack()
 
-// TZBootLoad Ä£¿éÔØÈë
+// TZBootLoad æ¨¡å—è½½å…¥
 void TZBootLoad(TZBootEnvironment environment);
 
-// TZBootRun Ä£¿éÔËĞĞ
+// TZBootRun æ¨¡å—è¿è¡Œ
 void TZBootRun(void);
 
-// TZBootUpdateAppTail ¸üĞÂÓ¦ÓÃ³ÌĞò³ÌĞòÎ²
-// Èç¹ûÓ¦ÓÃ³ÌĞòµÄÉı¼¶Î²µÄD°æ±¾»òÕßV°æ±¾ÓëÅäÖÃÖµ²»Æ¥ÅäÔò»á¸üĞÂ
+// TZBootUpdateAppTail æ›´æ–°åº”ç”¨ç¨‹åºç¨‹åºå°¾
+// å¦‚æœåº”ç”¨ç¨‹åºçš„å‡çº§å°¾çš„Dç‰ˆæœ¬æˆ–è€…Vç‰ˆæœ¬ä¸é…ç½®å€¼ä¸åŒ¹é…åˆ™ä¼šæ›´æ–°
 void TZBootUpdateAppTail(int dversion, int vversion);
 
 #endif
