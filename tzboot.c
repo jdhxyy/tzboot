@@ -37,8 +37,6 @@ void TZBootRun(void) {
         clearBackupTail();
     }
     gEnvironment.RunApp(gEnvironment.AppAddr);
-
-    // ÔËĞĞÊ±Î¹¹·
     feed();
 }
 
@@ -128,7 +126,6 @@ static bool upgrade(void) {
         return false;
     }
 
-    // ²Á³ıflashºóÎ¹¹·
     feed();
     intptr_t fdApp = TZFlashOpen(gEnvironment.AppAddr, gEnvironment.AppMaxSize, TZFLASH_WRITE_ONLY);
     feed();
@@ -160,7 +157,6 @@ static bool upgrade(void) {
             break;
         }
 
-        // Ã¿´Î¶ÁĞ´Î¹¹·
         feed();
     }
     TZFlashClose(fdBackup);
@@ -174,8 +170,8 @@ static void feed(void) {
     }
 }
 
-// TZBootUpdateAppTail ¸üĞÂÓ¦ÓÃ³ÌĞò³ÌĞòÎ²
-// Èç¹ûÓ¦ÓÃ³ÌĞòµÄÉı¼¶Î²µÄD°æ±¾»òÕßV°æ±¾ÓëÅäÖÃÖµ²»Æ¥ÅäÔò»á¸üĞÂ
+// TZBootUpdateAppTail æ›´æ–°åº”ç”¨ç¨‹åºç¨‹åºå°¾
+// å¦‚æœåº”ç”¨ç¨‹åºçš„å‡çº§å°¾çš„Dç‰ˆæœ¬æˆ–è€…Vç‰ˆæœ¬ä¸é…ç½®å€¼ä¸åŒ¹é…åˆ™ä¼šæ›´æ–°
 void TZBootUpdateAppTail(int dversion, int vversion) {
     UpgradeTail appTail, backupTail;
     if (readAppTail(&appTail) == false || readBackupTail(&backupTail) == false) {
@@ -203,7 +199,7 @@ void TZBootUpdateAppTail(int dversion, int vversion) {
     TZFlashClose(fd);
 }
 
-// TZBootSetFeedFunction ÉèÖÃÎ¹¹·½Ó¿Ú.Èç¹û²»ÉèÖÃ,Ôò²»»áÎ¹¹·
+// TZBootSetFeedFunction è®¾ç½®å–‚ç‹—å‡½æ•°æ¥å£.ä¸è®¾ç½®åˆ™æ“¦å†™flashæ—¶ä¸ä¼šå–‚ç‹—
 void TZBootSetFeedFunction(TZEmptyFunc feed) {
     gFeed = feed;
 }

@@ -73,7 +73,7 @@ void TZBootRun(void);
 // 如果应用程序的升级尾的D版本或者V版本与配置值不匹配则会更新
 void TZBootUpdateAppTail(int dversion, int vversion);
 
-// TZBootSetFeedFunction ����ι���ӿ�.���������,�򲻻�ι��
+// TZBootSetFeedFunction 设置喂狗函数接口.不设置则擦写flash时不会喂狗
 void TZBootSetFeedFunction(TZEmptyFunc feed);
 
 #endif
