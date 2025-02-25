@@ -12,12 +12,14 @@
 #define WRITE_BYTES_NUM 64
 
 static TZBootEnvironment gEnvironment;
+static TZEmptyFunc gFeed = NULL;
 
 static bool readAppTail(UpgradeTail* appTail);
 static bool readBackupTail(UpgradeTail* backupTail);
 static bool isNeedUpgrade(void);
 static void clearBackupTail(void);
 static bool upgrade(void);
+static void feed(void);
 
 // TZBootLoad 模块载入
 void TZBootLoad(TZBootEnvironment environment) {
@@ -35,6 +37,9 @@ void TZBootRun(void) {
         clearBackupTail();
     }
     gEnvironment.RunApp(gEnvironment.AppAddr);
+
+    // 运行时喂狗
+    feed();
 }
 
 static bool isNeedUpgrade(void) {
@@ -122,7 +127,12 @@ static bool upgrade(void) {
     if (fdBackup == 0) {
         return false;
     }
+
+    // 擦除flash后喂狗
+    feed();
     intptr_t fdApp = TZFlashOpen(gEnvironment.AppAddr, gEnvironment.AppMaxSize, TZFLASH_WRITE_ONLY);
+    feed();
+
     if (fdApp == 0) {
         TZFlashClose(fdBackup);
         return false;
@@ -149,10 +159,19 @@ static bool upgrade(void) {
             isOK = true;
             break;
         }
+
+        // 每次读写喂狗
+        feed();
     }
     TZFlashClose(fdBackup);
     TZFlashClose(fdApp);
     return isOK;
+}
+
+static void feed(void) {
+    if (gFeed != NULL) {
+        gFeed();
+    }
 }
 
 // TZBootUpdateAppTail 更新应用程序程序尾
@@ -182,4 +201,9 @@ void TZBootUpdateAppTail(int dversion, int vversion) {
     TZFlashWrite(fd, (uint8_t*)&appTail, sizeof(UpgradeTail));
     TZFlashWrite(fd, (uint8_t*)&backupTail, sizeof(UpgradeTail));
     TZFlashClose(fd);
+}
+
+// TZBootSetFeedFunction 设置喂狗接口.如果不设置,则不会喂狗
+void TZBootSetFeedFunction(TZEmptyFunc feed) {
+    gFeed = feed;
 }
